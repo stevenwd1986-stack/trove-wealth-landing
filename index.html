@@ -7,23 +7,27 @@
   <meta name="description" content="Track net worth, budgets, ISAs, pensions and more. With an AI assistant that answers questions about your money in plain English. Free to download for iPhone." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            navy: { DEFAULT: '#001E50', dark: '#001530', mid: '#002D72', light: '#0A3D82' },
-            gold: { DEFAULT: '#C9A24B', dark: '#A67C00', light: '#E2C98A' },
+            anchor:  { DEFAULT: '#232030', mid: '#3D3854', light: '#8C84A8', tint: '#F0EFF6' },
+            ink:     { DEFAULT: '#17151E' },
+            green:   { brand: '#22C55E', bright: '#4ADE80', deep: '#16A34A', tint: '#E7F7EE' },
+            gold:    { DEFAULT: '#C9A24B', dark: '#A67C00', light: '#E2C98A' },
+            surface: { DEFAULT: '#F4F3F8', card: '#FFFFFF', border: '#ECEAF2' },
+            muted:   { DEFAULT: '#6B6480', light: '#A19BB3' },
           },
-          fontFamily: { sans: ['Manrope', 'system-ui', 'sans-serif'] },
+          fontFamily: { sans: ['Hanken Grotesk', 'system-ui', 'sans-serif'] },
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Manrope', system-ui, sans-serif; }
+    * { font-family: 'Hanken Grotesk', system-ui, sans-serif; }
     html { scroll-behavior: smooth; }
 
     .phone-frame {
@@ -44,16 +48,16 @@
       border-radius: 0 0 14px 14px;
       z-index: 10;
     }
-    .phone-frame img {
-      width: 100%;
-      border-radius: 28px;
-      display: block;
-    }
-    .phone-frame-lg {
-      width: 300px;
-    }
+    .phone-frame img { width: 100%; border-radius: 28px; display: block; }
+    .phone-frame-lg { width: 300px; }
 
-    .gradient-text {
+    .green-text {
+      background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gold-text {
       background: linear-gradient(135deg, #E2C98A 0%, #C9A24B 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -61,20 +65,20 @@
     }
 
     .hero-bg {
-      background: linear-gradient(160deg, #001530 0%, #001E50 40%, #002D72 100%);
+      background-color: #17151E;
+      background-image:
+        radial-gradient(circle, rgba(34,197,94,0.06) 1px, transparent 1px),
+        linear-gradient(160deg, #17151E 0%, #232030 50%, #3D3854 100%);
+      background-size: 32px 32px, 100% 100%;
     }
 
-    .feature-card:hover { transform: translateY(-2px); }
-    .feature-card { transition: transform 0.2s ease; }
+    .feature-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(23,21,30,0.10); }
 
     .scroll-phones {
-      display: flex;
-      gap: 20px;
-      padding: 20px 40px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      display: flex; gap: 20px; padding: 20px 40px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
     .scroll-phones::-webkit-scrollbar { display: none; }
     .scroll-phones .phone-frame { scroll-snap-align: center; flex-shrink: 0; }
@@ -90,77 +94,88 @@
     }
     .float-anim { animation: float 4s ease-in-out infinite; }
     .float-anim-delay { animation: float 4s ease-in-out infinite 1.5s; }
+
+    /* Green glow pulse on CTA */
+    .btn-green {
+      background: #22C55E;
+      box-shadow: 0 0 0 0 rgba(34,197,94,0.4);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-green:hover {
+      background: #16A34A;
+      box-shadow: 0 0 0 8px rgba(34,197,94,0);
+    }
+
+    /* Mobile nav */
+    .mobile-nav { display: none; }
+    @media (max-width: 768px) { .mobile-nav { display: flex; } }
   </style>
 </head>
-<body class="bg-white text-gray-900 antialiased">
+<body class="bg-surface text-ink antialiased">
 
   <!-- NAV -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-navy/95 backdrop-blur-sm border-b border-white/10">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-ink/95 backdrop-blur-md border-b border-white/8">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="#" class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-navy-light to-navy-dark flex items-center justify-center border border-gold/30">
-          <span class="text-white font-bold text-sm">T</span>
-        </div>
+        <img src="logo.png" alt="Trove Wealth" class="w-8 h-8 rounded-xl object-cover" />
         <span class="text-white font-bold text-lg tracking-tight">Trove Wealth</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
-        <a href="#features" class="text-white/60 hover:text-white text-sm font-medium transition-colors">Features</a>
-        <a href="#screenshots" class="text-white/60 hover:text-white text-sm font-medium transition-colors">Screenshots</a>
-        <a href="#pricing" class="text-white/60 hover:text-white text-sm font-medium transition-colors">Pricing</a>
-        <a href="#faq" class="text-white/60 hover:text-white text-sm font-medium transition-colors">FAQ</a>
-        <a href="/blog.html" class="text-white/60 hover:text-white text-sm font-medium transition-colors">Blog</a>
-        <a href="/about.html" class="text-white/60 hover:text-white text-sm font-medium transition-colors">About</a>
+        <a href="#features" class="text-white/55 hover:text-white text-sm font-medium transition-colors">Features</a>
+        <a href="#screenshots" class="text-white/55 hover:text-white text-sm font-medium transition-colors">Screenshots</a>
+        <a href="#pricing" class="text-white/55 hover:text-white text-sm font-medium transition-colors">Pricing</a>
+        <a href="#faq" class="text-white/55 hover:text-white text-sm font-medium transition-colors">FAQ</a>
+        <a href="/blog.html" class="text-white/55 hover:text-white text-sm font-medium transition-colors">Blog</a>
+        <a href="/about.html" class="text-white/55 hover:text-white text-sm font-medium transition-colors">About</a>
       </div>
-      <a href="#download" class="bg-gold hover:bg-gold-dark text-navy font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors">
+      <a href="#download" class="btn-green text-white font-semibold text-sm px-5 py-2.5 rounded-xl">
         Download free
       </a>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section class="hero-bg pt-16 min-h-screen flex items-center overflow-hidden">
+  <section class="hero-bg hero-grid pt-16 min-h-screen flex items-center overflow-hidden relative">
     <div class="max-w-6xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-16 items-center w-full">
 
       <!-- Left -->
       <div>
-        <div class="inline-flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-4 py-2 mb-8">
-          <div class="w-2 h-2 rounded-full bg-green-400"></div>
-          <span class="text-white/80 text-sm font-medium">Free to download on iPhone</span>
+        <div class="inline-flex items-center gap-2 bg-green-brand/10 border border-green-brand/25 rounded-full px-4 py-2 mb-8">
+          <div class="w-2 h-2 rounded-full bg-green-brand"></div>
+          <span class="text-green-brand text-sm font-semibold">Free to download on iPhone</span>
         </div>
 
         <h1 class="text-5xl lg:text-6xl font-extrabold text-white leading-[1.08] mb-6">
           Your complete<br />
-          <span class="gradient-text">financial picture</span><br />
+          <span class="green-text">financial picture</span><br />
           in one place.
         </h1>
 
-        <p class="text-white/65 text-xl leading-relaxed mb-10 max-w-lg">
+        <p class="text-white/60 text-xl leading-relaxed mb-10 max-w-lg">
           Track net worth, budgets, ISAs, pensions and investments. With an AI assistant that answers questions about your money in plain English.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 mb-10">
-          <a href="#download" id="download" class="inline-flex items-center justify-center gap-3 bg-white text-navy font-bold text-base px-7 py-4 rounded-2xl hover:bg-gray-50 transition-colors">
+          <a href="#download" id="download" class="btn-green inline-flex items-center justify-center gap-3 text-white font-bold text-base px-7 py-4 rounded-2xl">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
             </svg>
             Download on App Store
           </a>
-          <a href="#features" class="inline-flex items-center justify-center gap-2 text-white/80 hover:text-white font-semibold text-base px-7 py-4 rounded-2xl border border-white/20 hover:border-white/40 transition-colors">
+          <a href="#features" class="inline-flex items-center justify-center gap-2 text-white/75 hover:text-white font-semibold text-base px-7 py-4 rounded-2xl border border-white/15 hover:border-white/35 transition-colors">
             See features
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
 
-        <div class="flex items-center gap-6 text-white/45 text-sm">
+        <div class="flex flex-wrap items-center gap-6 text-white/40 text-sm">
           <div class="flex items-center gap-1.5">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             No bank login required
           </div>
           <div class="flex items-center gap-1.5">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            Encrypted & private
+            Encrypted &amp; private
           </div>
           <div class="flex items-center gap-1.5">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
@@ -180,117 +195,147 @@
       </div>
     </div>
 
-    <!-- Bottom curve -->
+    <!-- Bottom fade -->
     <div class="absolute bottom-0 left-0 right-0">
       <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 60L1440 60L1440 30C1200 60 960 70 720 50C480 30 240 10 0 30L0 60Z" fill="white"/>
+        <path d="M0 60L1440 60L1440 30C1200 60 960 70 720 50C480 30 240 10 0 30L0 60Z" fill="#F4F3F8"/>
       </svg>
     </div>
   </section>
 
+  <!-- TRUST BAR -->
+  <section class="py-12 bg-surface border-b border-surface-border">
+    <div class="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-3xl font-extrabold text-ink mb-1">60+</p>
+        <p class="text-sm text-muted">Spending categories</p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold text-ink mb-1">10+</p>
+        <p class="text-sm text-muted">Account types supported</p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold text-ink mb-1">0</p>
+        <p class="text-sm text-muted">Bank logins required</p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold text-ink mb-1">100%</p>
+        <p class="text-sm text-muted">Private &amp; encrypted</p>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
-  <section id="features" class="py-24 bg-white">
+  <section id="features" class="py-24 bg-surface">
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Everything you need to manage your money</h2>
-        <p class="text-gray-500 text-xl max-w-2xl mx-auto">From day-to-day spending to long-term wealth building — all in one beautifully designed app.</p>
+        <p class="text-green-brand text-sm font-semibold uppercase tracking-widest mb-3">Features</p>
+        <h2 class="text-4xl font-extrabold text-ink mb-4">Everything you need to manage your money</h2>
+        <p class="text-muted text-xl max-w-2xl mx-auto">From day-to-day spending to long-term wealth building — all in one beautifully designed app.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-        <div class="feature-card bg-gray-50 rounded-2xl p-7 border border-gray-100">
-          <div class="w-11 h-11 rounded-xl bg-navy/8 flex items-center justify-center mb-5">
-            <svg width="22" height="22" fill="none" stroke="#001E50" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+        <!-- Net worth -->
+        <div class="feature-card bg-surface-card rounded-2xl p-7 border border-surface-border">
+          <div class="w-11 h-11 rounded-xl bg-surface flex items-center justify-center mb-5">
+            <svg width="22" height="22" fill="none" stroke="#22C55E" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.31 15.14c-1.52-.29-2.72-1.16-2.73-2.77 0-2.19 1.9-2.96 3.66-3.42 1.77-.45 2.34-.94 2.34-1.67 0-.84-.79-1.43-2.1-1.43-1.38 0-1.9.66-1.94 1.64H9.83c.05-1.34.87-2.57 2.49-2.97V5h2.34v1.69c1.51.32 2.72 1.3 2.72 2.81 0 1.79-1.49 2.69-3.66 3.21-1.95.46-2.34 1.15-2.34 1.87 0 .53.39 1.39 2.1 1.39 1.6 0 2.23-.72 2.32-1.64h1.72c-.1 1.7-1.36 2.66-2.86 2.97V19h-2.34v-1.86z"/></svg>
           </div>
-          <h3 class="font-bold text-gray-900 text-lg mb-2">Net worth tracker</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">See all your assets, liabilities, savings and investments in one dashboard. Updated in real time as you add transactions.</p>
+          <h3 class="font-bold text-ink text-lg mb-2">Net worth tracker</h3>
+          <p class="text-muted text-sm leading-relaxed">See all your assets, liabilities, savings and investments in one dashboard. Updated in real time as you add transactions.</p>
         </div>
 
-        <div class="feature-card bg-navy rounded-2xl p-7 border border-navy relative overflow-hidden">
-          <div class="absolute top-4 right-4 bg-gold/20 border border-gold/30 text-gold text-xs font-semibold px-2.5 py-1 rounded-full">Pro</div>
-          <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center mb-5">
-            <svg width="22" height="22" fill="none" stroke="#E2C98A" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        <!-- AI — dark card -->
+        <div class="feature-card bg-anchor rounded-2xl p-7 relative overflow-hidden">
+          <div class="absolute top-4 right-4 bg-green-brand/20 border border-green-brand/30 text-green-bright text-xs font-semibold px-2.5 py-1 rounded-full">Pro</div>
+          <div class="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-green-brand/5 blur-2xl pointer-events-none"></div>
+          <div class="w-11 h-11 rounded-xl bg-white/8 flex items-center justify-center mb-5">
+            <svg width="22" height="22" fill="none" stroke="#4ADE80" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
           </div>
           <h3 class="font-bold text-white text-lg mb-2">AI financial assistant</h3>
-          <p class="text-white/60 text-sm leading-relaxed">Ask anything about your money in plain English. Powered by AI — your data, your questions, instant answers.</p>
+          <p class="text-white/55 text-sm leading-relaxed">Ask anything about your money in plain English. Powered by AI — your data, your questions, instant answers.</p>
           <div class="mt-4 space-y-2">
-            <div class="bg-white/8 rounded-lg px-3 py-2 text-white/70 text-xs">"How much did I spend on food last month?"</div>
-            <div class="bg-white/8 rounded-lg px-3 py-2 text-white/70 text-xs">"Am I on track to hit my savings goals?"</div>
+            <div class="bg-white/6 border border-white/8 rounded-xl px-3 py-2 text-white/65 text-xs">"How much did I spend on food last month?"</div>
+            <div class="bg-white/6 border border-white/8 rounded-xl px-3 py-2 text-white/65 text-xs">"Am I on track to hit my savings goals?"</div>
           </div>
         </div>
 
-        <div class="feature-card bg-gray-50 rounded-2xl p-7 border border-gray-100">
-          <div class="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center mb-5">
-            <svg width="22" height="22" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <!-- Smart budgets -->
+        <div class="feature-card bg-surface-card rounded-2xl p-7 border border-surface-border">
+          <div class="w-11 h-11 rounded-xl bg-green-tint flex items-center justify-center mb-5">
+            <svg width="22" height="22" fill="none" stroke="#16A34A" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           </div>
-          <h3 class="font-bold text-gray-900 text-lg mb-2">Smart budgets</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">Set monthly spending limits by category. Get notified before you overspend. See progress at a glance in your monthly reports.</p>
+          <h3 class="font-bold text-ink text-lg mb-2">Smart budgets</h3>
+          <p class="text-muted text-sm leading-relaxed">Set monthly spending limits by category. Get notified before you overspend. See progress at a glance in your monthly reports.</p>
         </div>
 
-        <div class="feature-card bg-gray-50 rounded-2xl p-7 border border-gray-100">
-          <div class="absolute top-4 right-4"></div>
-          <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center mb-5">
-            <svg width="22" height="22" fill="none" stroke="#1d4ed8" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <!-- Wealth forecasting -->
+        <div class="feature-card bg-surface-card rounded-2xl p-7 border border-surface-border">
+          <div class="w-11 h-11 rounded-xl bg-anchor/8 flex items-center justify-center mb-5">
+            <svg width="22" height="22" fill="none" stroke="#3D3854" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
           </div>
           <div class="flex items-start justify-between mb-2">
-            <h3 class="font-bold text-gray-900 text-lg">Wealth forecasting</h3>
-            <span class="bg-navy/8 text-navy text-xs font-semibold px-2.5 py-1 rounded-full ml-2 whitespace-nowrap">Pro</span>
+            <h3 class="font-bold text-ink text-lg">Wealth forecasting</h3>
+            <span class="bg-anchor/8 text-anchor text-xs font-semibold px-2.5 py-1 rounded-full ml-2 whitespace-nowrap">Pro</span>
           </div>
-          <p class="text-gray-500 text-sm leading-relaxed">Project your net worth 1 to 5 years forward with compound growth scenarios. See how an extra £200/month changes the picture.</p>
+          <p class="text-muted text-sm leading-relaxed">Project your net worth 1 to 5 years forward with compound growth scenarios. See how an extra £200/month changes the picture.</p>
         </div>
 
-        <div class="feature-card bg-gray-50 rounded-2xl p-7 border border-gray-100">
-          <div class="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center mb-5">
-            <svg width="22" height="22" fill="none" stroke="#7c3aed" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        <!-- ISA & Tax -->
+        <div class="feature-card bg-surface-card rounded-2xl p-7 border border-surface-border">
+          <div class="w-11 h-11 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+            <svg width="22" height="22" fill="none" stroke="#A67C00" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
           </div>
           <div class="flex items-start justify-between mb-2">
-            <h3 class="font-bold text-gray-900 text-lg">Tax year &amp; ISA tracker</h3>
-            <span class="bg-navy/8 text-navy text-xs font-semibold px-2.5 py-1 rounded-full ml-2 whitespace-nowrap">Pro</span>
+            <h3 class="font-bold text-ink text-lg">Tax year &amp; ISA tracker</h3>
+            <span class="bg-anchor/8 text-anchor text-xs font-semibold px-2.5 py-1 rounded-full ml-2 whitespace-nowrap">Pro</span>
           </div>
-          <p class="text-gray-500 text-sm leading-relaxed">Track ISA allowances by type (Cash, Stocks, LISA), pension contributions, and tax year progress — all in one view.</p>
+          <p class="text-muted text-sm leading-relaxed">Track ISA allowances by type (Cash, Stocks, LISA), pension contributions, and tax year progress — all in one view.</p>
         </div>
 
-        <div class="feature-card bg-gray-50 rounded-2xl p-7 border border-gray-100">
-          <div class="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center mb-5">
-            <svg width="22" height="22" fill="none" stroke="#b45309" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <!-- Safe to spend -->
+        <div class="feature-card bg-surface-card rounded-2xl p-7 border border-surface-border">
+          <div class="w-11 h-11 rounded-xl bg-green-tint flex items-center justify-center mb-5">
+            <svg width="22" height="22" fill="none" stroke="#16A34A" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <h3 class="font-bold text-gray-900 text-lg mb-2">Safe to spend</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">Know exactly how much you can spend before your next payday, after bills and commitments are accounted for. No guesswork.</p>
+          <h3 class="font-bold text-ink text-lg mb-2">Safe to spend</h3>
+          <p class="text-muted text-sm leading-relaxed">Know exactly how much you can spend before your next payday, after bills and commitments are accounted for. No guesswork.</p>
         </div>
 
       </div>
 
-      <!-- More features row -->
+      <!-- Mini feature pills -->
       <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 text-center">
+        <div class="bg-surface-card rounded-xl p-5 border border-surface-border text-center">
           <div class="text-2xl mb-2">🏦</div>
-          <p class="text-sm font-semibold text-gray-700">60+ categories</p>
-          <p class="text-xs text-gray-400 mt-0.5">Auto AI tagging</p>
+          <p class="text-sm font-semibold text-ink">60+ categories</p>
+          <p class="text-xs text-muted-light mt-0.5">Auto AI tagging</p>
         </div>
-        <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 text-center">
+        <div class="bg-surface-card rounded-xl p-5 border border-surface-border text-center">
           <div class="text-2xl mb-2">🎯</div>
-          <p class="text-sm font-semibold text-gray-700">Savings goals</p>
-          <p class="text-xs text-gray-400 mt-0.5">With progress tracking</p>
+          <p class="text-sm font-semibold text-ink">Savings goals</p>
+          <p class="text-xs text-muted-light mt-0.5">With progress tracking</p>
         </div>
-        <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 text-center">
+        <div class="bg-surface-card rounded-xl p-5 border border-surface-border text-center">
           <div class="text-2xl mb-2">🔁</div>
-          <p class="text-sm font-semibold text-gray-700">Recurring items</p>
-          <p class="text-xs text-gray-400 mt-0.5">Bills, salary, subscriptions</p>
+          <p class="text-sm font-semibold text-ink">Recurring items</p>
+          <p class="text-xs text-muted-light mt-0.5">Bills, salary, subscriptions</p>
         </div>
-        <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 text-center">
+        <div class="bg-surface-card rounded-xl p-5 border border-surface-border text-center">
           <div class="text-2xl mb-2">📊</div>
-          <p class="text-sm font-semibold text-gray-700">Financial health score</p>
-          <p class="text-xs text-gray-400 mt-0.5">0–100 personalised rating</p>
+          <p class="text-sm font-semibold text-ink">Financial health score</p>
+          <p class="text-xs text-muted-light mt-0.5">0–100 personalised rating</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- SCREENSHOTS -->
-  <section id="screenshots" class="py-24 bg-gray-50 overflow-hidden">
+  <section id="screenshots" class="py-24 bg-anchor overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 mb-12 text-center">
-      <h2 class="text-4xl font-extrabold text-gray-900 mb-4">See it in action</h2>
-      <p class="text-gray-500 text-xl">A finance app that actually looks good to use.</p>
+      <p class="text-green-brand text-sm font-semibold uppercase tracking-widest mb-3">In the app</p>
+      <h2 class="text-4xl font-extrabold text-white mb-4">See it in action</h2>
+      <p class="text-white/50 text-xl">A finance app that actually looks good to use.</p>
     </div>
 
     <div class="scroll-phones justify-center">
@@ -315,195 +360,188 @@
     </div>
 
     <div class="text-center mt-6">
-      <p class="text-gray-400 text-sm">← Scroll to see more →</p>
+      <p class="text-white/30 text-sm">← Scroll to see more →</p>
     </div>
   </section>
 
   <!-- PRICING -->
-  <section id="pricing" class="py-24 bg-white">
+  <section id="pricing" class="py-24 bg-surface">
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Simple, honest pricing</h2>
-        <p class="text-gray-500 text-xl">Start free. Upgrade when you're ready. Cancel anytime.</p>
+        <p class="text-green-brand text-sm font-semibold uppercase tracking-widest mb-3">Pricing</p>
+        <h2 class="text-4xl font-extrabold text-ink mb-4">Simple, honest pricing</h2>
+        <p class="text-muted text-xl">Start free. Upgrade when you're ready. Cancel anytime.</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
 
         <!-- Free -->
-        <div class="border border-gray-200 rounded-2xl p-8">
+        <div class="bg-surface-card border border-surface-border rounded-2xl p-8">
           <div class="mb-6">
-            <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Free</p>
+            <p class="text-muted text-sm font-semibold uppercase tracking-wider mb-2">Free</p>
             <div class="flex items-baseline gap-1">
-              <span class="text-4xl font-extrabold text-gray-900">£0</span>
-              <span class="text-gray-400 text-sm">forever</span>
+              <span class="text-4xl font-extrabold text-ink">£0</span>
+              <span class="text-muted text-sm">forever</span>
             </div>
           </div>
-          <a href="#download" class="block text-center border border-gray-200 text-gray-700 font-semibold text-sm px-5 py-3 rounded-xl hover:border-gray-300 transition-colors mb-8">
+          <a href="#download" class="block text-center border border-surface-border text-ink font-semibold text-sm px-5 py-3 rounded-xl hover:border-anchor/30 transition-colors mb-8">
             Download free
           </a>
           <ul class="space-y-3">
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Unlimited accounts</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Transactions &amp; categories</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Net worth overview</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Recurring bills &amp; income</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Budgets (up to 3)</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Home screen widgets</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Unlimited accounts</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Transactions &amp; categories</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Net worth overview</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Recurring bills &amp; income</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Budgets (up to 3)</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Home screen widgets</li>
           </ul>
         </div>
 
-        <!-- Pro Monthly -->
-        <div class="bg-navy rounded-2xl p-8 relative ring-2 ring-gold/40">
-          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold text-navy text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">
-            Most popular
-          </div>
-          <div class="mb-6">
-            <p class="text-white/50 text-sm font-semibold uppercase tracking-wider mb-2">Pro — Monthly</p>
-            <div class="flex items-baseline gap-1">
-              <span class="text-4xl font-extrabold text-white">£4.99</span>
-              <span class="text-white/40 text-sm">/month</span>
+        <!-- Pro Monthly — featured hero card -->
+        <div class="rounded-2xl relative overflow-hidden" style="background: linear-gradient(145deg, #1a2e1e 0%, #17151E 40%, #1e2e1a 100%); box-shadow: 0 0 0 1.5px rgba(34,197,94,0.5), 0 24px 48px rgba(34,197,94,0.12);">
+          <!-- Green glow orbs -->
+          <div class="absolute -top-12 -right-12 w-40 h-40 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%);"></div>
+          <div class="absolute -bottom-10 -left-10 w-36 h-36 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(74,222,128,0.15) 0%, transparent 70%);"></div>
+
+          <div class="p-8 relative z-10">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-1.5 bg-green-brand/15 border border-green-brand/30 rounded-full px-3 py-1 mb-6">
+              <div class="w-1.5 h-1.5 rounded-full bg-green-brand"></div>
+              <span class="text-green-brand text-xs font-bold uppercase tracking-widest">Most popular</span>
             </div>
+
+            <p class="text-white/40 text-xs font-semibold uppercase tracking-widest mb-2">Pro — Monthly</p>
+            <div class="flex items-baseline gap-1 mb-1">
+              <span class="text-5xl font-extrabold text-white">£4.99</span>
+              <span class="text-white/35 text-base">/month</span>
+            </div>
+            <p class="text-white/30 text-xs mb-6">Billed monthly · cancel anytime</p>
+
+            <a href="#download" class="flex items-center justify-center gap-2 w-full font-bold text-sm py-3.5 rounded-xl mb-7 transition-all" style="background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%); color: #0E3B24; box-shadow: 0 4px 16px rgba(34,197,94,0.35);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              Start with Pro
+            </a>
+
+            <div class="h-px bg-white/8 mb-6"></div>
+
+            <ul class="space-y-3">
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Everything in Free</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>AI financial assistant</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Unlimited budgets</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Wealth forecasting &amp; projections</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Financial health score</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Tax year &amp; ISA tracker</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Reports &amp; spending trends</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Split transactions</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Pension projector</li>
+              <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Apple Family Sharing (up to 6)</li>
+            </ul>
           </div>
-          <a href="#download" class="block text-center bg-gold hover:bg-gold-dark text-navy font-bold text-sm px-5 py-3 rounded-xl transition-colors mb-8">
-            Start with Pro
-          </a>
-          <ul class="space-y-3">
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Everything in Free</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>AI financial assistant</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Unlimited budgets</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Wealth forecasting &amp; projections</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Financial health score</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Tax year &amp; ISA tracker</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Reports &amp; spending trends</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Split transactions</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Pension projector</li>
-            <li class="flex items-start gap-2.5 text-sm text-white/70"><svg class="w-4 h-4 text-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Apple Family Sharing (up to 6)</li>
-          </ul>
         </div>
 
         <!-- Pro Annual -->
-        <div class="border-2 border-gold/30 bg-gold/3 rounded-2xl p-8 relative">
-          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">
+        <div class="bg-surface-card border border-surface-border rounded-2xl p-8 relative">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 btn-green text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">
             Save 15%
           </div>
           <div class="mb-6">
-            <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Pro — Annual</p>
+            <p class="text-muted text-sm font-semibold uppercase tracking-wider mb-2">Pro — Annual</p>
             <div class="flex items-baseline gap-1">
-              <span class="text-4xl font-extrabold text-gray-900">£4.24</span>
-              <span class="text-gray-400 text-sm">/month</span>
+              <span class="text-4xl font-extrabold text-ink">£4.24</span>
+              <span class="text-muted text-sm">/month</span>
             </div>
-            <p class="text-gray-400 text-xs mt-1">£50.90 billed once a year</p>
+            <p class="text-muted-light text-xs mt-1">£50.90 billed once a year</p>
           </div>
-          <a href="#download" class="block text-center bg-navy hover:bg-navy-dark text-white font-bold text-sm px-5 py-3 rounded-xl transition-colors mb-8">
+          <a href="#download" class="block text-center border-2 border-green-brand text-green-deep hover:bg-green-tint font-bold text-sm px-5 py-3 rounded-xl transition-colors mb-8">
             Get annual Pro
           </a>
           <ul class="space-y-3">
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Everything in Pro monthly</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>15% saving vs monthly</li>
-            <li class="flex items-start gap-2.5 text-sm text-gray-600"><svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Apple Family Sharing included</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Everything in Pro monthly</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>15% saving vs monthly</li>
+            <li class="flex items-start gap-2.5 text-sm text-muted"><svg class="w-4 h-4 text-green-brand mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Apple Family Sharing included</li>
           </ul>
 
-          <div class="mt-8 bg-white rounded-xl p-4 border border-gold/20">
-            <p class="text-xs text-gray-500 leading-relaxed">
-              <strong class="text-gray-700">Apple Family Sharing</strong> — share your Pro subscription with up to 6 family members at no extra cost, via your existing iCloud family group.
+          <div class="mt-8 bg-surface rounded-xl p-4 border border-surface-border">
+            <p class="text-xs text-muted leading-relaxed">
+              <strong class="text-ink">Apple Family Sharing</strong> — share your Pro subscription with up to 6 family members at no extra cost, via your existing iCloud family group.
             </p>
           </div>
         </div>
 
       </div>
 
-      <p class="text-center text-gray-400 text-sm mt-8">
+      <p class="text-center text-muted-light text-sm mt-8">
         Managed and billed through Apple. Cancel anytime in your iPhone Settings. No hidden fees.
       </p>
     </div>
   </section>
 
-  <!-- TRUST BAR -->
-  <section class="py-16 bg-gray-50 border-y border-gray-100">
-    <div class="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      <div>
-        <p class="text-3xl font-extrabold text-navy mb-1">60+</p>
-        <p class="text-sm text-gray-500">Spending categories</p>
-      </div>
-      <div>
-        <p class="text-3xl font-extrabold text-navy mb-1">10+</p>
-        <p class="text-sm text-gray-500">Account types supported</p>
-      </div>
-      <div>
-        <p class="text-3xl font-extrabold text-navy mb-1">0</p>
-        <p class="text-sm text-gray-500">Bank logins required</p>
-      </div>
-      <div>
-        <p class="text-3xl font-extrabold text-navy mb-1">100%</p>
-        <p class="text-sm text-gray-500">Private &amp; encrypted</p>
-      </div>
-    </div>
-  </section>
-
   <!-- FAQ -->
-  <section id="faq" class="py-24 bg-white">
+  <section id="faq" class="py-24 bg-surface-card border-t border-surface-border">
     <div class="max-w-3xl mx-auto px-6">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Frequently asked questions</h2>
+        <p class="text-green-brand text-sm font-semibold uppercase tracking-widest mb-3">FAQ</p>
+        <h2 class="text-4xl font-extrabold text-ink mb-4">Frequently asked questions</h2>
       </div>
 
-      <div class="divide-y divide-gray-100">
+      <div class="divide-y divide-surface-border">
 
         <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
           <div class="flex items-center justify-between gap-4">
-            <h3 class="font-semibold text-gray-900 text-base">Is Trove Wealth really free?</h3>
-            <svg class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            <h3 class="font-semibold text-ink text-base">Is Trove Wealth really free?</h3>
+            <svg class="faq-chevron w-5 h-5 text-muted-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="faq-answer mt-3 text-gray-500 text-sm leading-relaxed">
+          <div class="faq-answer mt-3 text-muted text-sm leading-relaxed">
             Yes. Core features — accounts, transactions, net worth overview, recurring items, and basic budgets — are free forever with no time limit. Pro adds AI, forecasting, unlimited budgets, and advanced analytics for £4.99/month.
           </div>
         </div>
 
         <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
           <div class="flex items-center justify-between gap-4">
-            <h3 class="font-semibold text-gray-900 text-base">Does it connect to my bank automatically?</h3>
-            <svg class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            <h3 class="font-semibold text-ink text-base">Does it connect to my bank automatically?</h3>
+            <svg class="faq-chevron w-5 h-5 text-muted-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="faq-answer mt-3 text-gray-500 text-sm leading-relaxed">
+          <div class="faq-answer mt-3 text-muted text-sm leading-relaxed">
             Not yet — you add accounts and transactions manually, which means your data stays completely under your control and no bank credentials are ever stored. Automatic bank sync via Open Banking is on our roadmap.
           </div>
         </div>
 
         <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
           <div class="flex items-center justify-between gap-4">
-            <h3 class="font-semibold text-gray-900 text-base">Is my financial data secure?</h3>
-            <svg class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            <h3 class="font-semibold text-ink text-base">Is my financial data secure?</h3>
+            <svg class="faq-chevron w-5 h-5 text-muted-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="faq-answer mt-3 text-gray-500 text-sm leading-relaxed">
+          <div class="faq-answer mt-3 text-muted text-sm leading-relaxed">
             All data is encrypted in transit and at rest, with row-level security ensuring your data is only accessible by you. We never sell your data or share it with third parties.
           </div>
         </div>
 
         <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
           <div class="flex items-center justify-between gap-4">
-            <h3 class="font-semibold text-gray-900 text-base">What devices does it support?</h3>
-            <svg class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            <h3 class="font-semibold text-ink text-base">What devices does it support?</h3>
+            <svg class="faq-chevron w-5 h-5 text-muted-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="faq-answer mt-3 text-gray-500 text-sm leading-relaxed">
+          <div class="faq-answer mt-3 text-muted text-sm leading-relaxed">
             Trove Wealth is available for iPhone (iOS 16 and above). Your data syncs automatically via your account. An iPad version with a full split-view layout is currently in development and will follow the iPhone launch.
           </div>
         </div>
 
         <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
           <div class="flex items-center justify-between gap-4">
-            <h3 class="font-semibold text-gray-900 text-base">How does Family Sharing work?</h3>
-            <svg class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            <h3 class="font-semibold text-ink text-base">How does Family Sharing work?</h3>
+            <svg class="faq-chevron w-5 h-5 text-muted-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="faq-answer mt-3 text-gray-500 text-sm leading-relaxed">
+          <div class="faq-answer mt-3 text-muted text-sm leading-relaxed">
             With a Pro subscription, up to 6 family members can access all Pro features through Apple's built-in Family Sharing — at no extra cost. Each person has their own separate account and data. Managed through your iCloud family group, just like any other App Store purchase.
           </div>
         </div>
 
         <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
           <div class="flex items-center justify-between gap-4">
-            <h3 class="font-semibold text-gray-900 text-base">Can I cancel my subscription?</h3>
-            <svg class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            <h3 class="font-semibold text-ink text-base">Can I cancel my subscription?</h3>
+            <svg class="faq-chevron w-5 h-5 text-muted-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="faq-answer mt-3 text-gray-500 text-sm leading-relaxed">
+          <div class="faq-answer mt-3 text-muted text-sm leading-relaxed">
             Yes, cancel any time through your iPhone Settings → Apple ID → Subscriptions. No lock-in, no cancellation fee. You'll keep Pro access until the end of your billing period, then revert to the free plan.
           </div>
         </div>
@@ -513,38 +551,36 @@
   </section>
 
   <!-- FOOTER CTA -->
-  <section class="hero-bg py-24">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8">
-        <span class="text-white font-extrabold text-2xl">T</span>
-      </div>
+  <section class="hero-bg py-24 relative overflow-hidden">
+    <div class="absolute inset-0 hero-grid opacity-60"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-56 bg-green-brand/8 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="max-w-3xl mx-auto px-6 text-center relative z-10">
+      <img src="logo.png" alt="Trove Wealth" class="w-16 h-16 rounded-2xl object-cover mx-auto mb-8 shadow-2xl" />
       <h2 class="text-4xl font-extrabold text-white mb-4">Start tracking your wealth today</h2>
-      <p class="text-white/60 text-xl mb-10">Free to download. No bank login. No commitment.</p>
-      <a href="#" class="inline-flex items-center gap-3 bg-white text-navy font-bold text-base px-8 py-4 rounded-2xl hover:bg-gray-50 transition-colors">
+      <p class="text-white/55 text-xl mb-10">Free to download. No bank login. No commitment.</p>
+      <a href="#" class="btn-green inline-flex items-center gap-3 text-white font-bold text-base px-8 py-4 rounded-2xl">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         Download on the App Store
       </a>
-      <p class="text-white/35 text-sm mt-5">iPhone · iOS 16+ · Free to download · iPad coming soon</p>
+      <p class="text-white/30 text-sm mt-5">iPhone · iOS 16+ · Free to download · iPad coming soon</p>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="bg-navy-dark border-t border-white/8 py-12">
+  <footer class="bg-ink border-t border-white/6 py-12">
     <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-2.5">
-        <div class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center">
-          <span class="text-white font-bold text-xs">T</span>
-        </div>
-        <span class="text-white/60 font-semibold text-sm">Trove Wealth</span>
+        <img src="logo.png" alt="Trove Wealth" class="w-7 h-7 rounded-lg object-cover" />
+        <span class="text-white/55 font-semibold text-sm">Trove Wealth</span>
       </div>
-      <div class="flex items-center gap-8 text-white/40 text-sm">
-        <a href="/blog.html" class="hover:text-white/70 transition-colors">Blog</a>
-        <a href="/about.html" class="hover:text-white/70 transition-colors">About</a>
-        <a href="https://www.gettrove.co.uk/privacy" target="_blank" rel="noopener" class="hover:text-white/70 transition-colors">Privacy policy</a>
-        <a href="/terms" class="hover:text-white/70 transition-colors">Terms of use</a>
-        <a href="mailto:hello@gettrove.co.uk" class="hover:text-white/70 transition-colors">Contact</a>
+      <div class="flex flex-wrap items-center justify-center gap-6 text-white/35 text-sm">
+        <a href="/blog.html" class="hover:text-white/65 transition-colors">Blog</a>
+        <a href="/about.html" class="hover:text-white/65 transition-colors">About</a>
+        <a href="https://www.gettrove.co.uk/privacy" target="_blank" rel="noopener" class="hover:text-white/65 transition-colors">Privacy policy</a>
+        <a href="/terms" class="hover:text-white/65 transition-colors">Terms of use</a>
+        <a href="mailto:hello@gettrove.co.uk" class="hover:text-white/65 transition-colors">Contact</a>
       </div>
-      <p class="text-white/25 text-xs">© 2026 Trove Wealth. All rights reserved.</p>
+      <p class="text-white/20 text-xs">© 2026 Trove Wealth. All rights reserved.</p>
     </div>
   </footer>
 
